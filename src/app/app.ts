@@ -1,22 +1,21 @@
-import { Component, signal } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { Header } from './header/header';
 import { UserInput } from './user-input/user-input';
+import { InvestmentInput } from './investment-input.model';
+import { InvestmentResultModel } from './investment-results/investment-results.model';
+import { InvestmentResults } from './investment-results/investment-results';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
-  imports: [Header, UserInput]
+  imports: [Header, UserInput, InvestmentResults]
 })
 export class App {
   protected readonly title = signal('investment-calculator');
+  investmentResults?: InvestmentResultModel[]
 
-  calculateInvestmentResults(data: {
-    initialInvestment: number,
-    annualInvestment: number,
-    expectedReturn: number,
-    duration: number
-  }) {
+  calculateInvestmentResults(data: InvestmentInput) {
   const annualData = [];
   let investmentValue = data.initialInvestment;
 
@@ -36,6 +35,6 @@ export class App {
     });
   }
 
-  return annualData;
+  this.investmentResults = annualData
 }
 }
